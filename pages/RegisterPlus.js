@@ -4,9 +4,7 @@ import { useEffect, useState, useContext } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import SelectDropdown from 'react-native-select-dropdown';
 import { AuthContext } from '../context/AuthContext';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-const STORAGE_KEY_ID = "@userId";
-const STORAGE_KEY_PW = "@userPW";
+
 
 const years = ["1학기", "2학기", "3학기", "4학기", "5학기", "6학기", "7학기", "8학기"]
 const income = ["1분위","2분위","3분위","4분위","5분위","6분위","7분위","8분위","9분위","10분위"]
@@ -29,34 +27,26 @@ const RegisterPlus = ({ navigation }) => {
     const [incomes, setIncomes] = useState("");
 
     const {register} = useContext(AuthContext);
+    console.log("등록?=>"+register.username+"비번?=>"+register.password);
 
     const onChangeAverageGPA = (payload) => setAverageGPA(payload);
     const onChangeLastGPA = (payload) => setLastGPA(payload);
     const onChangeEmail = (payload) => setEmail(payload);
     const onChangeResidence = (payload) => setResidence(payload);
 
-    const loadId = async () => {
-        const uId = await AsyncStorage.getItem(STORAGE_KEY_ID);
-        return uId;
-    };
-    const loadPW = async () => {
-        const pw = await AsyncStorage.getItem(STORAGE_KEY_PW);
-        return pw;
-    };
 
     const submit = async () => {
 
         console.log("submit");
-        const userId = await loadId();
-        //console.log("userId=> "+ userId);
-        const userPW = await loadPW();
-        // console.log("userPW=> "+ userPW);
+        const userId = register.username;
+        console.log("userId=> "+ userId);
+        const userPW = register.password;
 
         register(userPW, userId, semester, lastGPA, averageGPA, incomes, department, residence, email);
         console.log(userPW, userId, semester, lastGPA, averageGPA, incomes, department, residence, email);
         // console.log(semester + department + incomes);
         // console.log(lastGPA + averageGPA + residence + email);
-        navigation.navigate('Login');
+        navigation.navigate('Login2');
         // setId("");
         // setAverageGPA("");
         

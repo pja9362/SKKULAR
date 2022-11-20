@@ -4,13 +4,13 @@ import { useEffect, useState, useContext } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 // import { postApi, getApi } from "../src/api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-const STORAGE_KEY = "@userId";
+
 
 const RegisterId = ({ navigation }) => {
     const [id, setId] = useState("");
     const [checking, setChecking] = useState(false);
     const {register} = useContext(AuthContext);
+    console.log(register.username);
 
     const checkDouble = async () => {
         // check with API
@@ -22,20 +22,17 @@ const RegisterId = ({ navigation }) => {
         setPassword("");
     }
 
-    const saveId = async (toSave) => {
-        await AsyncStorage.setItem(STORAGE_KEY, toSave);
+    const saveId =  (toSave) => {
+        register.username = toSave;
+        console.log("등록?=>"+register.username);
     };
-    const loadId = async () => {
-        const s = await AsyncStorage.getItem(STORAGE_KEY);
-        console.log(s);
-    };
-    const submit = async () => {
+
+    const submit = () => {
         // 중복 확인 했는지 체크
         checking ? (
             navigation.navigate('RegisterPW'),
             console.log(id),
-            saveId(id),
-            loadId()
+            saveId(id)
         )
         : alert('id valid checking!');
     }

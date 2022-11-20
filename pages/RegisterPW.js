@@ -1,32 +1,28 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-const STORAGE_KEY = "@userPW";
+import { AuthContext } from '../context/AuthContext';
 
 const RegisterPW = ({ navigation }) => {
+    const {register} = useContext(AuthContext);
     const [password, setPassword] = useState("");
     const [password2, setPassword2] = useState("");
 
     const onChangePW = (payload) => setPassword(payload);
     const onChangePW2 = (payload) => setPassword2(payload);
     
-    const savePW = async (toSave) => {
-        await AsyncStorage.setItem(STORAGE_KEY, toSave);
+    const savePW = (toSave) => {
+        register.password = toSave;
+        console.log("등록?=>",register.password);
     };
-    const loadPW = async () => {
-        const s = await AsyncStorage.getItem(STORAGE_KEY);
-        console.log(s);
-    };
-
-    const submit = async () => {
+    const submit = () => {
         // check with API
         //alert('I will check');
         password === password2 ? (
             navigation.navigate('RegisterPlus'),
             console.log(password),
-            savePW(password),
-            loadPW()
+            savePW(password)
+            // loadPW()
         )
         : alert('invalid!') 
 
